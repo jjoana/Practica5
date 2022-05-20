@@ -1,14 +1,18 @@
 package com.Programacion.pr2;
 
+import java.security.KeyStore.Entry;
 import java.util.*;
 
 public class Graph<V> {
 
     // Lista de adyacencia.
     private Map<Vertice<V>, Set<Vertice<V>>> adjacencyList = new HashMap<>();
+    private Stack<Vertice<V>> pila = new Stack<>();
+    private List<Stack<Vertice<V>>>caminosEncontrados = new ArrayList<>();
 
     // Voy a hacer el metodo getter PARA PRUEBAS
     public Map<Vertice<V>, Set<Vertice<V>>> getAdjacencyList() {
+
         return adjacencyList;
     }
 
@@ -19,11 +23,15 @@ public class Graph<V> {
      * contrario.
      ******************************************************************/
     public boolean addVertex(Vertice<V> v) {
-
-        Set<Vertice<V>> set = new HashSet<Vertice<V>>();
-        adjacencyList.put(v, set);
-
-        return true;
+        boolean isVertex;
+        if (adjacencyList.containsKey(v)){
+            isVertex= false;
+        }else{
+            Set<Vertice<V>> nuevoSet = new HashSet<>();
+            adjacencyList.put(v, nuevoSet);
+            isVertex= true;
+        }
+        return isVertex;
     }
 
     /******************************************************************
@@ -35,10 +43,30 @@ public class Graph<V> {
      * @ param v2 el destino del arco.
      * @ return ` true` si no existí a el arco y ` false` en caso contrario.
      ******************************************************************/
-    public boolean addEdge(V v1, V v2) {
-        return true; // Este código hay que modificarlo.
+    public boolean addEdge(Vertice<V> v1, Vertice<V> v2) {
+        boolean isCorrecto = false;
+        try{
+            if (!this.containsVertex(v1)&& !this.containsVertex(v2)){
+                this.addVertex(v1);
+                adjacencyList.get(v1).add(v2);
+                this.addVertex(v2);
+                adjacencyList.get(v2).add(v1);
+            }else if (this.containsVertex(v1)&& !this.containsVertex(v2)){
+                this.addVertex(v2);
+                adjacencyList.get(v2).add(v1);
+                adjacencyList.get(v1).add(v2);
+            }else if (this.containsVertex(v1)&& this.containsVertex(v2)){
+                adjacencyList.get(v2).add(v1);
+                adjacencyList.get(v1).add(v2);
+            }else{
+                isCorrecto=true;
+            }
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return isCorrecto;
     }
-
+   
     /******************************************************************
      * Obtiene el conjunto de vé rtices adyacentes a ` v`.
      *
@@ -57,10 +85,16 @@ public class Graph<V> {
      ******************************************************************/
     public boolean containsVertex(Vertice<V> v) {
 
-        boolean isVertex;
-        isVertex = adjacencyList.containsKey(v);
-        return isVertex;
-
+        boolean esta = false;
+        //Lo implemento asi que un vértice es distinto de in vértice no visitado
+        //- Un vértice no vistado tiene el mismo id que un visitado
+        //. Un vértice no visitado difiere de visitado en el atributo isVisited.
+        for (Map.Entry<Vertice<V>, Set<Vertice<V>>> entry : adjacencyList.entrySet()){
+            if (entry.getKey().getid().equals(v.getid())){
+                esta=true;
+            }
+        }
+            return esta;
     }
 
     /******************************************************************
@@ -70,7 +104,32 @@ public class Graph<V> {
      ******************************************************************/
     @Override
     public String toString() {
-        return ""; // Este código hay que modificarlo.
+
+        ArrayList<String> adyacentes = new ArrayList<>();
+        Set<Vertice<V>> nodoSet;
+        StringBuilder cadenaAdyacentes= new StringBuilder();
+        StringBuilder cadena = new StringBuilder();
+
+        for(Map.Entry<Vertice<V>, Set<Vertice<V>>> entry : adjacencyList.entrySet()){
+            nodoSet = (Set<Vertice<V>>) entry.getValue();
+            for(Vertice v: nodoSet){
+                cadenaAdyacentes.append((v.getid().toString()));
+                cadenaAdyacentes.append("");
+            }
+            cadena.append("Vertice: ");
+            cadena.append(((Vertice) entry.getKey()).getid());
+            cadena.append("Vertices adyacentes: ");
+            cadena.append("\n");
+            adyacentes.add(cadena.toString());
+            cadenaAdyacentes.delete(0, cadenaAdyacentes.length());
+            cadena.delete(0, cadena.length());
+        }
+        Collections.sort(adyacentes);
+
+        for(String cad : adyacentes) {
+            cadena.append(cad);
+        }
+        return cadena.toString();
     }
 
     /**
