@@ -123,11 +123,12 @@ public class Graph<V> {
             nodoSet = (Set<Vertice<V>>) entry.getValue();
             for (Vertice v : nodoSet) {
                 cadenaAdyacentes.append((v.getid().toString()));
-                cadenaAdyacentes.append("");
+                cadenaAdyacentes.append(" ");
             }
             cadena.append("Vertice: ");
             cadena.append(((Vertice) entry.getKey()).getid());
             cadena.append("Vertices adyacentes: ");
+            cadena.append(cadenaAdyacentes);
             cadena.append("\n");
             adyacentes.add(cadena.toString());
             cadenaAdyacentes.delete(0, cadenaAdyacentes.length());
@@ -150,7 +151,49 @@ public class Graph<V> {
      * @ return lista con la secuencia de vé rtices del camino má s corto
      * entre ` v1` y ` v2`
      */
-    public List<V> shortestPath(V v1, V v2) {
-        return null; // Esto código hay que modificarlo.
+    public List<Vertice<V>> shortestPath(Vertice<V> from, Vertice<V> to) {
+        Set<Vertice<V>> set;
+
+        try{
+            pila.push(from);
+            from.setisVisited(true);
+            set= obtainAdjacents(from);
+
+            for(Vertice<V> vertice : set){
+                if(vertice == to){
+                    //Tengo que quitar la pila y montar una List<Version>>
+                    pila.push(vertice);
+                    Stack<Vertice<V>>nuevoCamino = new Stack<>();
+                    nuevoCamino.addAll(pila);
+                    caminosEncontrados.add(nuevoCamino);
+                    System.out.println("Camino encontrado" + pila);
+                    pila.pop();
+                    break;
+                }  else if (!vertice.getisVisited()){
+                    System.out.println("Buscando camino.");
+                    shortestPath(vertice, to);
+                    pila.pop();
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return this.dameCaminoMinimo();
+    }
+
+    private Stack<Vertice<V>> dameCaminoMinimo(){
+
+        Stack<Vertice<V>> caminoMinimo = null;
+        try{
+            caminoMinimo = caminosEncontrados.get(0);
+            for(Stack<Vertice<V>> camino: caminosEncontrados){
+                if(caminoMinimo.size() > camino.size()){
+                    caminoMinimo= camino;
+                }
+            }
+        }catch(IndexOutOfBoundsException ex){
+            System.out.println("No ha sido posible encontrar un camino mínimo aun...");
+        }
+        return caminoMinimo;
     }
 }

@@ -29,5 +29,10 @@ public class Vertice <W> {
         this.isVisited=isVisited;
     }
 
+    @Override
+    public String toString(){
+        return id.toString();
+    }
+
 
 }
