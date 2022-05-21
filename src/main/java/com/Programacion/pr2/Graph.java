@@ -8,7 +8,7 @@ public class Graph<V> {
     // Lista de adyacencia.
     private Map<Vertice<V>, Set<Vertice<V>>> adjacencyList = new HashMap<>();
     private Stack<Vertice<V>> pila = new Stack<>();
-    private List<Stack<Vertice<V>>>caminosEncontrados = new ArrayList<>();
+    private List<Stack<Vertice<V>>> caminosEncontrados = new ArrayList<>();
 
     // Voy a hacer el metodo getter PARA PRUEBAS
     public Map<Vertice<V>, Set<Vertice<V>>> getAdjacencyList() {
@@ -24,12 +24,12 @@ public class Graph<V> {
      ******************************************************************/
     public boolean addVertex(Vertice<V> v) {
         boolean isVertex;
-        if (adjacencyList.containsKey(v)){
-            isVertex= false;
-        }else{
+        if (adjacencyList.containsKey(v)) {
+            isVertex = false;
+        } else {
             Set<Vertice<V>> nuevoSet = new HashSet<>();
             adjacencyList.put(v, nuevoSet);
-            isVertex= true;
+            isVertex = true;
         }
         return isVertex;
     }
@@ -45,36 +45,45 @@ public class Graph<V> {
      ******************************************************************/
     public boolean addEdge(Vertice<V> v1, Vertice<V> v2) {
         boolean isCorrecto = false;
-        try{
-            if (!this.containsVertex(v1)&& !this.containsVertex(v2)){
+        try {
+            if (!this.containsVertex(v1) && !this.containsVertex(v2)) {
                 this.addVertex(v1);
                 adjacencyList.get(v1).add(v2);
                 this.addVertex(v2);
                 adjacencyList.get(v2).add(v1);
-            }else if (this.containsVertex(v1)&& !this.containsVertex(v2)){
+            } else if (this.containsVertex(v1) && !this.containsVertex(v2)) {
                 this.addVertex(v2);
                 adjacencyList.get(v2).add(v1);
                 adjacencyList.get(v1).add(v2);
-            }else if (this.containsVertex(v1)&& this.containsVertex(v2)){
+            } else if (this.containsVertex(v1) && this.containsVertex(v2)) {
                 adjacencyList.get(v2).add(v1);
                 adjacencyList.get(v1).add(v2);
-            }else{
-                isCorrecto=true;
+            } else {
+                isCorrecto = true;
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return isCorrecto;
     }
-   
+
     /******************************************************************
      * Obtiene el conjunto de vé rtices adyacentes a ` v`.
      *
      * @ param v vé rtice del que se obtienen los adyacentes.
      * @ return conjunto de vé rtices adyacentes.
      ******************************************************************/
-    public Set<V> obtainAdjacents(V v) throws Exception {
-        return null; // Este código hay que modificarlo.
+    public Set<Vertice<V>> obtainAdjacents(Vertice<V> v) throws Exception {
+
+        // Buscamos el conjunto de nodos adyacentes a v
+        Set<Vertice<V>> set = new HashSet<>();
+        if (this.containsVertex(v)) {
+            set = adjacencyList.get(v);
+        }
+        if (set.isEmpty()) {
+            throw new Exception("El vértice no tiene adyacentes o el vértice no está en el grafo");
+        }
+        return set;
     }
 
     /******************************************************************
@@ -86,15 +95,15 @@ public class Graph<V> {
     public boolean containsVertex(Vertice<V> v) {
 
         boolean esta = false;
-        //Lo implemento asi que un vértice es distinto de in vértice no visitado
-        //- Un vértice no vistado tiene el mismo id que un visitado
-        //. Un vértice no visitado difiere de visitado en el atributo isVisited.
-        for (Map.Entry<Vertice<V>, Set<Vertice<V>>> entry : adjacencyList.entrySet()){
-            if (entry.getKey().getid().equals(v.getid())){
-                esta=true;
+        // Lo implemento asi que un vértice es distinto de in vértice no visitado
+        // - Un vértice no vistado tiene el mismo id que un visitado
+        // . Un vértice no visitado difiere de visitado en el atributo isVisited.
+        for (Map.Entry<Vertice<V>, Set<Vertice<V>>> entry : adjacencyList.entrySet()) {
+            if (entry.getKey().getid().equals(v.getid())) {
+                esta = true;
             }
         }
-            return esta;
+        return esta;
     }
 
     /******************************************************************
@@ -107,12 +116,12 @@ public class Graph<V> {
 
         ArrayList<String> adyacentes = new ArrayList<>();
         Set<Vertice<V>> nodoSet;
-        StringBuilder cadenaAdyacentes= new StringBuilder();
+        StringBuilder cadenaAdyacentes = new StringBuilder();
         StringBuilder cadena = new StringBuilder();
 
-        for(Map.Entry<Vertice<V>, Set<Vertice<V>>> entry : adjacencyList.entrySet()){
+        for (Map.Entry<Vertice<V>, Set<Vertice<V>>> entry : adjacencyList.entrySet()) {
             nodoSet = (Set<Vertice<V>>) entry.getValue();
-            for(Vertice v: nodoSet){
+            for (Vertice v : nodoSet) {
                 cadenaAdyacentes.append((v.getid().toString()));
                 cadenaAdyacentes.append("");
             }
@@ -126,7 +135,7 @@ public class Graph<V> {
         }
         Collections.sort(adyacentes);
 
-        for(String cad : adyacentes) {
+        for (String cad : adyacentes) {
             cadena.append(cad);
         }
         return cadena.toString();

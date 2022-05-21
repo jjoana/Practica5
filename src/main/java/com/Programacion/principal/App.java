@@ -14,6 +14,10 @@ public class App {
         grafo.addVertex(v1);
         grafo.addVertex(v2);
         grafo.addVertex(v3);
+        grafo.addEdge(v1, v2);
+        grafo.addEdge(v1, v3);
+        grafo.addEdge(v2, v3);
+
 
         System.out.println("Esta vertice v1: " + grafo.containsVertex(v1));
         System.out.println("Esta vertice v2: " + grafo.containsVertex(v2));
