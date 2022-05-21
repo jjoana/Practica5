@@ -16,18 +16,13 @@ public class App {
         Vertice<Integer> v7 = new Vertice<Integer>(7, false);
         Vertice<Integer> v8 = new Vertice<Integer>(8, false);
         Vertice<Integer> v9 = new Vertice<Integer>(9, false);
+
         grafo.addEdge(v1, v2);
-        grafo.addEdge(v1, v3);
-        grafo.addEdge(v2, v4);
-        grafo.addEdge(v2, v5);
-        grafo.addEdge(v3, v5);
-        grafo.addEdge(v3, v7);
-        grafo.addEdge(v5, v6);
-        grafo.addEdge(v6, v7);
-        grafo.addEdge(v7, v8);
-        grafo.addEdge(v7, v9);
+        grafo.addEdge(v1, v5);
+        grafo.addEdge(v2, v3);
+        grafo.addEdge(v3, v4);
+        grafo.addEdge(v5, v4);
 
-        System.out.println("Ruta minima encontrada entre vertices: " + grafo.shortestPath(v1, v9));
-
+        System.out.println("Ruta minima encontrada entre vertices: " + grafo.shortestPath(v1, v4));
     }
 }
