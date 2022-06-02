@@ -1,6 +1,5 @@
 package com.Programacion.pr2;
 
-import java.security.KeyStore.Entry;
 import java.util.*;
 
 public class Graph<V> {
@@ -35,13 +34,13 @@ public class Graph<V> {
     }
 
     /******************************************************************
-     * Añ ade un arco entre los vé rtices ` v1` y ` v2` al grafo. En
-     * caso de que no exista alguno de los vé rtices, lo añ ade
-     * tambié n.
+     * Añade un arco entre los vértices ` v1` y ` v2` al grafo. En
+     * caso de que no exista alguno de los vértices, lo añade
+     * también.
      *
      * @ param v1 el origen del arco.
      * @ param v2 el destino del arco.
-     * @ return ` true` si no existí a el arco y ` false` en caso contrario.
+     * @ return ` true` si no existía el arco y ` false` en caso contrario.
      ******************************************************************/
     public boolean addEdge(Vertice<V> v1, Vertice<V> v2) {
         boolean isCorrecto = false;
@@ -68,9 +67,9 @@ public class Graph<V> {
     }
 
     /******************************************************************
-     * Obtiene el conjunto de vé rtices adyacentes a ` v`.
+     * Obtiene el conjunto de vértices adyacentes a ` v`.
      *
-     * @ param v vé rtice del que se obtienen los adyacentes.
+     * @ param v vértice del que se obtienen los adyacentes.
      * @ return conjunto de vé rtices adyacentes.
      ******************************************************************/
     public Set<Vertice<V>> obtainAdjacents(Vertice<V> v) throws Exception {
